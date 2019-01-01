@@ -10,10 +10,14 @@ import android.widget.TextView;
 
 public class FindBeerActivity extends AppCompatActivity {
 
+
+    private BeerExpert beerExpert;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_beer);
+        beerExpert = new BeerExpert();
     }
 
     @Override
@@ -43,6 +47,9 @@ public class FindBeerActivity extends AppCompatActivity {
 
         Spinner color = findViewById(R.id.color);
         String beerType = String.valueOf(color.getSelectedItem());
-        brands.setText(beerType);
+
+        brands.clearComposingText();
+        for (String type: beerExpert.getBrands(beerType))
+            brands.setText(brands.getText() + "\n" + type);
     }
 }
