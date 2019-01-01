@@ -1,15 +1,20 @@
 package com.example.dmitry.stopwatch;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 public class Stopwatch extends AppCompatActivity {
+
+    private int seconds = 0;
+    private boolean isRunning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +31,7 @@ public class Stopwatch extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        runTimer();
     }
 
     @Override
@@ -51,11 +57,36 @@ public class Stopwatch extends AppCompatActivity {
     }
 
     public void onClickStart(View view) {
+        isRunning = true;
     }
 
     public void onClickStop(View view) {
+        isRunning = false;
     }
 
     public void onClickReset(View view) {
+        isRunning = false;
+        seconds = 0;
+    }
+
+    private void runTimer() {
+        final TextView timeView = findViewById(R.id.time_view);
+        final Handler handler = new Handler();
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                int hours = seconds / 3600;
+                int minutes = (seconds % 3600) / 60;
+                int secs = seconds % 60;
+                String format = "%d:%02d:%02d";
+                String time = String.format(format, hours, minutes, secs);
+                timeView.setText(time);
+                if (isRunning) {
+                    seconds++;
+                }
+                handler.postDelayed(this, 1000);
+            }
+        });
     }
 }
