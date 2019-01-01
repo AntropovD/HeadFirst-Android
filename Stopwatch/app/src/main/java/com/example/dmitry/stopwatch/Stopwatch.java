@@ -15,6 +15,7 @@ public class Stopwatch extends AppCompatActivity {
 
     private int seconds = 0;
     private boolean isRunning = false;
+    private boolean wasRunning;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class Stopwatch extends AppCompatActivity {
         if (savedInstanceState != null) {
             seconds = savedInstanceState.getInt("seconds");
             isRunning = savedInstanceState.getBoolean("isRunning");
+            wasRunning = savedInstanceState.getBoolean("wasRunning");
         }
         runTimer();
     }
@@ -60,10 +62,25 @@ public class Stopwatch extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putInt("seconds", seconds);
         savedInstanceState.putBoolean("isRunning", isRunning);
         super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        wasRunning = isRunning;
+        isRunning = false;
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (wasRunning) {
+            isRunning = true;
+        }
     }
 
     public void onClickStart(View view) {
@@ -95,7 +112,7 @@ public class Stopwatch extends AppCompatActivity {
                 if (isRunning) {
                     seconds++;
                 }
-                handler.postDelayed(this, 1000);
+                handler.postDelayed(this, 100);
             }
         });
     }
