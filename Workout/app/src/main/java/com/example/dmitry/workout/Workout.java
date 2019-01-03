@@ -1,5 +1,7 @@
 package com.example.dmitry.workout;
 
+import android.support.annotation.NonNull;
+
 public class Workout {
 
     public static final Workout[] workouts = {
@@ -13,8 +15,8 @@ public class Workout {
                     "500 meter run\n21 x 1.5 pood kettleball swing\n21 x pull-ups")
     };
 
-    private String name;
-    private String description;
+    private final String name;
+    private final String description;
 
     // В объекте Workout хранится имя и описание
     private Workout(String name, String description) {
@@ -30,6 +32,7 @@ public class Workout {
         return name;
     }
 
+    @NonNull
     public String toString() {
         return this.name;
     }
