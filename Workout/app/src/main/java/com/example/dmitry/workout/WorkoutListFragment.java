@@ -47,5 +47,4 @@ public class WorkoutListFragment extends ListFragment {
 
     void itemClicked(long id);
   }
-
 }
