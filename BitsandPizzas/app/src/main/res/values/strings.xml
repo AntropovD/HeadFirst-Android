@@ -4,4 +4,23 @@
   <string name="action_create_order">Create Order</string>
   <string name="order_activity">Order Activity</string>
   <string name="action_share">Share</string>
+  <string name="top_fragment">Top Fragment</string>
+  <string-array name="pizzas">
+    <item>Diavolo</item>
+    <item>Funghi</item>
+  </string-array>
+  <string-array name="pasta">
+    <item>Spaghetti Bolognese</item>
+    <item>Lasagne</item>
+  </string-array>
+  <string-array name="stores">
+    <item>Cambridge</item>
+    <item>Sebastopol</item>
+  </string-array>
+  <string-array name="titles">
+    <item>Home</item>
+    <item>Pizzas</item>
+    <item>Pasta</item>
+    <item>Stores</item>
+  </string-array>
 </resources>
