@@ -20,7 +20,7 @@ public class PizzaFragment extends ListFragment {
     ArrayAdapter<String> adapter = new ArrayAdapter<String>(
         inflater.getContext(),
         android.R.layout.simple_list_item_1,
-        getResources().getStringArray(R.array.pasta)
+        getResources().getStringArray(R.array.pizzas)
     );
 
     setListAdapter(adapter);

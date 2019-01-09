@@ -3,9 +3,11 @@ package com.example.dmitry.bitsandpizzas;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
   private String[] titles;
   private ListView drawerList;
   private DrawerLayout drawerLayout;
+  private ActionBarDrawerToggle drawerToggle;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,31 @@ public class MainActivity extends AppCompatActivity {
     if (savedInstanceState == null) {
       selectItem(0);
     }
+
+    drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
+        R.string.open_drawer, R.string.close_drawer) {
+
+      public void onDrawerClosed(View view) {
+        super.onDrawerClosed(view);
+        invalidateOptionsMenu();
+      }
+
+      public void onDrawerOpened(View drawerView) {
+        super.onDrawerOpened(drawerView);
+        invalidateOptionsMenu();
+      }
+    };
+    drawerLayout.setDrawerListener(drawerToggle);
+
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    getSupportActionBar().setHomeButtonEnabled(true);
+  }
+
+  @Override
+  public boolean onPrepareOptionsMenu(Menu menu) {
+    boolean drawerOpen = drawerLayout.isDrawerOpen(drawerList);
+    menu.findItem(R.id.action_share).setVisible(!drawerOpen);
+    return super.onPrepareOptionsMenu(menu);
   }
 
   @Override
@@ -60,6 +88,10 @@ public class MainActivity extends AppCompatActivity {
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
+    if (drawerToggle.onOptionsItemSelected(item)) {
+      return true;
+    }
+
     switch (item.getItemId()) {
       case R.id.action_create_order:
         Intent intent = new Intent(this, OrderActivity.class);
@@ -70,6 +102,18 @@ public class MainActivity extends AppCompatActivity {
       default:
         return super.onOptionsItemSelected(item);
     }
+  }
+
+  @Override
+  protected void onPostCreate(Bundle savedInstanceState) {
+    super.onPostCreate(savedInstanceState);
+    drawerToggle.syncState();
+  }
+
+  @Override
+  public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    drawerToggle.onConfigurationChanged(newConfig);
   }
 
   private void selectItem(int position) {
@@ -106,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
     } else {
       title = titles[position];
     }
-    getActionBar().setTitle(title);
+    getSupportActionBar().setTitle(title);
   }
 
   private class DrawerItemClickListener implements ListView.OnItemClickListener {
