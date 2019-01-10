@@ -8,6 +8,7 @@
 
     <ImageView
         android:id="@+id/photo"
+        android:contentDescription="@string/coffee_photo"
         android:layout_width="@android:dimen/thumbnail_width"
         android:layout_height="@android:dimen/thumbnail_height" />
 
