@@ -28,7 +28,7 @@ public class DrinkActivity extends AppCompatActivity {
       SQLiteOpenHelper starbuzzDatabaseHelper = new StarbuzzDatabaseHelper(this);
       SQLiteDatabase db = starbuzzDatabaseHelper.getReadableDatabase();
       Cursor cursor = db.query("DRINK",
-          new String[]{"NAME", "DESCRIPTION", "IMAGE_RESOURCE_ID"}, "_id = ?",
+          new String[]{"NAME", "DESCRIPTION", "IMAGE_RESOURCE_ID", "FAVORITE"}, "_id = ?",
           new String[]{Integer.toString(drinkNo)}, null, null, null
       );
       if (cursor.moveToFirst()) {
