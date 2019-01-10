@@ -1,6 +1,7 @@
 package com.example.dmitry.bitsandpizzas;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -19,11 +20,15 @@ import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
 
+  private static final String POSITION = "position";
+  private static final String FRAGMENT_TAG = "visible_fragment";
   private ShareActionProvider shareActionProvider;
   private String[] titles;
   private ListView drawerList;
   private DrawerLayout drawerLayout;
   private ActionBarDrawerToggle drawerToggle;
+  private int currentPosition = 0;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +44,10 @@ public class MainActivity extends AppCompatActivity {
     ));
 
     drawerList.setOnItemClickListener(new DrawerItemClickListener());
-    if (savedInstanceState == null) {
+    if (savedInstanceState != null) {
+      currentPosition = savedInstanceState.getInt(POSITION);
+      setActionBarTitle(currentPosition);
+    } else {
       selectItem(0);
     }
 
@@ -56,10 +64,33 @@ public class MainActivity extends AppCompatActivity {
         invalidateOptionsMenu();
       }
     };
-    drawerLayout.setDrawerListener(drawerToggle);
+    drawerLayout.addDrawerListener(drawerToggle);
 
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setHomeButtonEnabled(true);
+
+    getFragmentManager().addOnBackStackChangedListener(
+        new FragmentManager.OnBackStackChangedListener() {
+          public void onBackStackChanged() {
+            FragmentManager fragMan = getFragmentManager();
+            Fragment fragment = fragMan.findFragmentByTag("visible_fragment");
+            if (fragment instanceof TopFragment) {
+              currentPosition = 0;
+            }
+            if (fragment instanceof PizzaFragment) {
+              currentPosition = 1;
+            }
+            if (fragment instanceof PastaFragment) {
+              currentPosition = 2;
+            }
+            if (fragment instanceof StoresFragment) {
+              currentPosition = 3;
+            }
+            setActionBarTitle(currentPosition);
+            drawerList.setItemChecked(currentPosition, true);
+          }
+        }
+    );
   }
 
   @Override
@@ -117,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void selectItem(int position) {
+    currentPosition = position;
     Fragment fragment;
     switch (position) {
       case 1:
@@ -132,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         fragment = new TopFragment();
     }
     FragmentTransaction ft = getFragmentManager().beginTransaction();
-    ft.replace(R.id.content_frame, fragment);
+    ft.replace(R.id.content_frame, fragment, FRAGMENT_TAG);
     ft.addToBackStack(null);
     ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
     ft.commit();
@@ -141,6 +173,12 @@ public class MainActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
     drawerLayout.closeDrawer(drawerList);
+  }
+
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putInt(POSITION, currentPosition);
   }
 
   private void setActionBarTitle(int position) {
