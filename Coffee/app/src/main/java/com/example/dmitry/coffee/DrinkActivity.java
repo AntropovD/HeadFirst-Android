@@ -43,8 +43,6 @@ public class DrinkActivity extends AppCompatActivity {
         TextView description = findViewById(R.id.description);
         description.setText(descriptionText);
       }
-      cursor.close();
-      db.close();
     } catch (Exception e) {
       Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
       toast.show();
