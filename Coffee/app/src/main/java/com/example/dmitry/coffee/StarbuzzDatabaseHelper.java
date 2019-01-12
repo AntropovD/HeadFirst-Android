@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 class StarbuzzDatabaseHelper extends SQLiteOpenHelper {
 
   private static final String DB_NAME = "starbuzz"; // Имя базы данных
-  private static final int DB_VERSION = 2;
+  private static final int DB_VERSION = 3;
 
   StarbuzzDatabaseHelper(Context context) {
     super(context, DB_NAME, null, DB_VERSION);
@@ -37,6 +37,11 @@ class StarbuzzDatabaseHelper extends SQLiteOpenHelper {
 
   @Override
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    updateMyDatabase(db, oldVersion, newVersion);
+  }
+
+  @Override
+  public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     updateMyDatabase(db, oldVersion, newVersion);
   }
 

@@ -78,4 +78,24 @@ public class TopLevelActivity extends AppCompatActivity {
     favoriteCursor.close();
     db.close();
   }
+
+  @Override
+  public void onRestart() {
+    super.onRestart();
+    try {
+      StarbuzzDatabaseHelper starbuzzDatabaseHelper = new StarbuzzDatabaseHelper(this);
+      db = starbuzzDatabaseHelper.getReadableDatabase();
+      Cursor newCursor = db.query("DRINK",
+          new String[]{"_id", "NAME"},
+          "FAVORITE = 1",
+          null, null, null, null);
+      ListView listFavorites = findViewById(R.id.list_favorites);
+      CursorAdapter adapter = (CursorAdapter) listFavorites.getAdapter();
+      adapter.changeCursor(newCursor);
+      favoriteCursor = newCursor;
+    } catch (SQLiteException e) {
+      Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
+      toast.show();
+    }
+  }
 }
