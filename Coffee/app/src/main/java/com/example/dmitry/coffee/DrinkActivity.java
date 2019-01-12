@@ -50,6 +50,9 @@ public class DrinkActivity extends AppCompatActivity {
 
         CheckBox favorite = findViewById(R.id.favorite);
         favorite.setChecked(isFavorite);
+
+        cursor.close();
+        db.close();
       }
     } catch (Exception e) {
       Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
