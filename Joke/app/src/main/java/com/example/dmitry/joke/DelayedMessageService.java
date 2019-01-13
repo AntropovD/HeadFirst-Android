@@ -2,9 +2,11 @@ package com.example.dmitry.joke;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
 public class DelayedMessageService extends IntentService {
 
+  public static final String EXTRA_MESSAGE = "message";
 
   public DelayedMessageService() {
     super("DelayedMessageService");
@@ -12,8 +14,19 @@ public class DelayedMessageService extends IntentService {
 
   @Override
   protected void onHandleIntent(Intent intent) {
-    if (intent != null) {
-
+    synchronized (this) {
+      try{
+        wait(10000);
+      }
+      catch ( InterruptedException ex) {
+        ex.printStackTrace();
+      }
+      String text = intent.getStringExtra(EXTRA_MESSAGE);
+      showText(text);
     }
+  }
+
+  private void showText(final String text) {
+    Log.v("DelayedMessageService", "The message is: " + text);
   }
 }
