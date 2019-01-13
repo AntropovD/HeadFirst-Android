@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             if (fragment instanceof TopFragment) {
               currentPosition = 0;
             }
-            if (fragment instanceof PizzaFragment) {
+            if (fragment instanceof PizzaMaterialFragment) {
               currentPosition = 1;
             }
             if (fragment instanceof PastaFragment) {
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragment;
     switch (position) {
       case 1:
-        fragment = new PizzaFragment();
+        fragment = new PizzaMaterialFragment();
         break;
       case 2:
         fragment = new PastaFragment();
