@@ -34,6 +34,8 @@ public class PizzaMaterialFragment extends Fragment {
     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
     pizzaRecycler.setLayoutManager(layoutManager);
 
+
+    Manager
     adapter.setListener(new CaptionedImagesAdapter.Listener() {
       public void onClick(int position) {
         Intent intent = new Intent(getActivity(), PizzaDetailActivity.class);
